@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>❤️ by Sandreke</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- Página base --- */
+    body {
+      background: #000;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Outfit', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* --- Contenedor principal --- */
+    #main-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    /* --- Formulario de entrada --- */
+    #form-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 100;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    #form-container.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    h1 {
+      color: #ff4d88;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 4rem;
+      text-shadow: 0 0 20px rgba(255, 77, 136, 0.5);
+      letter-spacing: 2px;
+    }
+
+    /* --- Contenedor del formulario unificado --- */
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid #ff4d88;
+      border-radius: 50px;
+      box-shadow: 0 0 20px rgba(255, 77, 136, 0.3);
+      padding: 8px 8px 8px 32px;
+      max-width: 550px;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+    }
+
+    .input-wrapper:focus-within {
+      border-color: #ff6b9d;
+      box-shadow: 0 0 30px rgba(255, 77, 136, 0.5);
+    }
+
+    #name-input {
+      flex: 1;
+      padding: 14px 16px;
+      font-size: 1.1rem;
+      font-family: 'Outfit', sans-serif;
+      background: transparent;
+      border: none;
+      color: #fff;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    #name-input::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    #create-btn {
+      padding: 16px 32px;
+      font-size: 1.8rem;
+      font-weight: 400;
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #ff8ba7, #ff6b9d);
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+      flex-shrink: 0;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #create-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 25px rgba(255, 107, 157, 0.5);
+      background: linear-gradient(135deg, #ff9bb5, #ff7bab);
+    }
+
+    #create-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* --- Corazón animado --- */
+    #heart-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+
+    #heart-container.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #ui .love {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -225px 0 0 -225px;
+      --i: 1;
+    }
+
+    #ui .love_word {
+      color: #ff4d88;
+      font-size: 1.4rem;
+      transform: translateY(-100%) rotateZ(-30deg);
+      text-shadow: 0 0 4px rgba(255, 77, 136, 0.8);
+      letter-spacing: 2px;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+
+    #ui .love_horizontal {
+      animation: horizontal 10000ms infinite alternate ease-in-out;
+      animation-delay: calc(var(--i) * -400ms);
+    }
+
+    #ui .love_vertical {
+      animation: vertical 20000ms infinite linear;
+      animation-delay: calc(var(--i) * -400ms);
+    }
+
+    /* --- Botón de volver --- */
+    #back-btn {
+      position: fixed;
+      top: 30px;
+      left: 30px;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid #ff4d88;
+      border-radius: 10px;
+      color: #ff4d88;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 101;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #back-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #back-btn:hover {
+      background: #ff4d88;
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(255, 77, 136, 0.5);
+    }
+
+    /* --- Créditos --- */
+    .credits {
+      position: fixed;
+      bottom: 20px;
+      right: 30px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+      z-index: 101;
+      font-weight: 300;
+      transform: scale(1);
+      transform-origin: bottom right;
+    }
+
+    .credits a {
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .credits a:hover {
+      color: #ff4d88;
+      text-decoration: underline;
+    }
+
+    /* --- Animaciones --- */
+    @keyframes horizontal {
+      from { transform: translateX(0px); }
+      to   { transform: translateX(450px); }
+    }
+
+    @keyframes vertical {
+      0%   { transform: translateY(180px); }
+      10%  { transform: translateY(45px); }
+      15%  { transform: translateY(4.5px); }
+      18%  { transform: translateY(0px); }
+      20%  { transform: translateY(4.5px); }
+      22%  { transform: translateY(34.61538px); }
+      24%  { transform: translateY(64.28571px); }
+      25%  { transform: translateY(112.5px); }
+      26%  { transform: translateY(64.28571px); }
+      28%  { transform: translateY(34.61538px); }
+      30%  { transform: translateY(4.5px); }
+      32%  { transform: translateY(0px); }
+      35%  { transform: translateY(4.5px); }
+      40%  { transform: translateY(45px); }
+      50%  { transform: translateY(180px); }
+      71%  { transform: translateY(428.57143px); }
+      72.5%{ transform: translateY(441.17647px); }
+      75%  { transform: translateY(450px); }
+      77.5%{ transform: translateY(441.17647px); }
+      79%  { transform: translateY(428.57143px); }
+      100% { transform: translateY(180px); }
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .input-wrapper {
+        max-width: 90vw;
+        padding: 6px 6px 6px 24px;
+      }
+
+      #name-input {
+        font-size: 1rem;
+        padding: 12px 12px;
+      }
+
+      #create-btn {
+        font-size: 1.5rem;
+        padding: 14px 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="main-container">
+    <!-- Formulario inicial -->
+    <div id="form-container">
+      <h1>Mi corazón por ti</h1>
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          id="name-input" 
+          placeholder="Tu nombre..." 
+          maxlength="30"
+        />
+        <button id="create-btn">🤍</button>
+      </div>
+    </div>
+
+    <!-- Botón para volver -->
+    <button id="back-btn">← Volver</button>
+
+    <!-- Credits -->
+    <div class="credits">
+      by <a href="https://github.com/Sandreke/name-to-heart" target="_blank" rel="noopener noreferrer">Sandreke</a>
+    </div>
+
+    <!-- Contenedor del corazón -->
+    <div id="heart-container">
+      <div id="ui"></div>
+    </div>
+  </div>
+
+  <script>
+    const N = 100;
+    const ui = document.getElementById('ui');
+    const formContainer = document.getElementById('form-container');
+    const heartContainer = document.getElementById('heart-container');
+    const nameInput = document.getElementById('name-input');
+    const createBtn = document.getElementById('create-btn');
+    const backBtn = document.getElementById('back-btn');
+
+    // Función para crear el corazón
+    function createHeart(text) {
+      // Limpiar corazón anterior
+      ui.innerHTML = '';
+
+      // Crear elementos flotantes
+      for (let i = 1; i <= N; i++) {
+        const love = document.createElement('div');
+        love.className = 'love';
+        love.style.setProperty('--i', i);
+
+        const h = document.createElement('div');
+        h.className = 'love_horizontal';
+
+        const v = document.createElement('div');
+        v.className = 'love_vertical';
+
+        const word = document.createElement('div');
+        word.className = 'love_word';
+        word.textContent = text || 'Te quiero';
+        
+        v.appendChild(word);
+        h.appendChild(v);
+        love.appendChild(h);
+        ui.appendChild(love);
+      }
+    }
+
+    // Evento del botón crear
+    createBtn.addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      const textToShow = name || 'Te quiero';
+      
+      createHeart(textToShow);
+      
+      // Ocultar formulario y mostrar corazón
+      formContainer.classList.add('hidden');
+      heartContainer.classList.add('visible');
+      backBtn.classList.add('visible');
+    });
+
+    // Enter en el input
+    nameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        createBtn.click();
+      }
+    });
+
+    // Botón volver
+    backBtn.addEventListener('click', () => {
+      formContainer.classList.remove('hidden');
+      heartContainer.classList.remove('visible');
+      backBtn.classList.remove('visible');
+      nameInput.value = '';
+      nameInput.focus();
+    });
+
+    // Focus inicial
+    nameInput.focus();
+  </script>
+</body>
+</html>
